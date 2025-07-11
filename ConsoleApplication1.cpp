@@ -28,6 +28,24 @@ using json = nlohmann::json;
 			std::string input;
 			std::getline(std::cin, input);
 
+			if (toLower(input) == "show me the list") 
+			{
+				std::ifstream file("data.json"); 
+				if (file.is_open()) {
+					json j;
+					file >> j; 
+					v = j.get<std::vector<std::string>>(); 
+					file.close();
+					for (std::string str : v) {
+						std::cout << str << std::endl; 
+					}
+				}
+
+				else {
+					std::cout << "Something went wrong. There is no saved data.\n";
+					return 1;
+				}
+			}
 
 			if (toLower(input) == "no" || toLower(input) == "exit")
 			{
@@ -41,16 +59,16 @@ using json = nlohmann::json;
 					std::cout << str << std::endl;
 				}
 
-				json j = v; // обновляем JSON перед сохранением
+				json j = v; 
 
-				std::ofstream file("data.json");
-				if (!file.is_open()) {
-					std::cout << "Ошибка открытия файла\n";
+				std::ofstream file("data.json"); 
+				if (!file.is_open()) { 
+					std::cout << "The file cannot be opened\n";
 					return 1;
 				}
 
-				file << j.dump(4); // записываем с отступами
-				std::cout << "Данные сохранены\n";
+				file << j.dump(4); 
+				std::cout << "Data was saved\n";
 				return 0;
 			}
 
